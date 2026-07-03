@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef } from 'react';
-import { Phone, Sparkles } from 'lucide-react';
+import { Phone } from 'lucide-react';
 
 const HalideLanding: React.FC = () => {
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -12,8 +12,9 @@ const HalideLanding: React.FC = () => {
 
     // Mouse Parallax Logic
     const handleMouseMove = (e: MouseEvent) => {
-      const x = (window.innerWidth / 2 - e.pageX) / 25;
-      const y = (window.innerHeight / 2 - e.pageY) / 25;
+      // Slower, more subtle movement for a premium feel
+      const x = (window.innerWidth / 2 - e.pageX) / 35;
+      const y = (window.innerHeight / 2 - e.pageY) / 35;
 
       // Rotate the 3D Canvas
       canvas.style.transform = `rotateX(${55 + y / 2}deg) rotateZ(${-25 + x / 2}deg)`;
@@ -21,9 +22,9 @@ const HalideLanding: React.FC = () => {
       // Apply depth shift to layers
       layersRef.current.forEach((layer, index) => {
         if (!layer) return;
-        const depth = (index + 1) * 15;
-        const moveX = x * (index + 1) * 0.2;
-        const moveY = y * (index + 1) * 0.2;
+        const depth = (index + 1) * 20;
+        const moveX = x * (index + 1) * 0.3;
+        const moveY = y * (index + 1) * 0.3;
         layer.style.transform = `translateZ(${depth}px) translate(${moveX}px, ${moveY}px)`;
       });
     };
@@ -52,7 +53,7 @@ const HalideLanding: React.FC = () => {
         :root {
           --bg: #0a0a0a;
           --silver: #e0e0e0;
-          --accent: #14b8a6; /* Clean teal color for cleaning service */
+          --accent: #14b8a6; /* Clean teal color */
           --grain-opacity: 0.15;
         }
 
@@ -80,7 +81,7 @@ const HalideLanding: React.FC = () => {
 
         .viewport {
           perspective: 2000px;
-          width: 100vw; height: 100vh;
+          width: 100%; height: 100%;
           display: flex; align-items: center; justify-content: center;
           overflow: hidden;
         }
@@ -90,6 +91,15 @@ const HalideLanding: React.FC = () => {
           width: 800px; height: 500px;
           transform-style: preserve-3d;
           transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Mobile specific canvas sizing to make it fit well and show the photo clearly */
+        @media (max-width: 768px) {
+          .canvas-3d {
+             width: 85vw;
+             height: 120vw; /* Make it taller on mobile so the portrait photo looks good */
+             max-height: 60vh;
+          }
         }
 
         .layer {
@@ -102,9 +112,9 @@ const HalideLanding: React.FC = () => {
           border-radius: 20px;
         }
 
-        .layer-1 { background-image: url('/bg.png'); filter: grayscale(0.5) contrast(1.1) brightness(0.6); }
-        .layer-2 { background-image: url('/bg.png'); filter: grayscale(0.3) contrast(1.2) brightness(0.7); opacity: 0.6; mix-blend-mode: screen; }
-        .layer-3 { background-image: url('/bg.png'); filter: grayscale(0.2) contrast(1.3) brightness(0.8); opacity: 0.4; mix-blend-mode: overlay; }
+        .layer-1 { background-image: url('/bg.png'); filter: grayscale(0.2) contrast(1.1) brightness(0.7); }
+        .layer-2 { background-image: url('/bg.png'); filter: grayscale(0.1) contrast(1.2) brightness(0.8); opacity: 0.7; mix-blend-mode: screen; }
+        .layer-3 { background-image: url('/bg.png'); filter: grayscale(0.0) contrast(1.3) brightness(0.9); opacity: 0.5; mix-blend-mode: overlay; }
 
         .contours {
           position: absolute;
@@ -119,22 +129,21 @@ const HalideLanding: React.FC = () => {
           position: absolute;
           inset: 0;
           padding: 4rem;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          grid-template-rows: auto 1fr auto;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
           z-index: 10;
           pointer-events: none;
         }
 
         .hero-title {
-          grid-column: 1 / -1;
-          align-self: center;
-          font-size: clamp(3rem, 8vw, 8rem);
+          font-size: clamp(2.5rem, 8vw, 8rem);
           line-height: 0.85;
           letter-spacing: -0.04em;
           mix-blend-mode: difference;
           color: white;
           text-shadow: 0 4px 20px rgba(0,0,0,0.5);
+          text-align: center;
         }
 
         .hero-subtitle {
@@ -144,6 +153,7 @@ const HalideLanding: React.FC = () => {
           font-weight: 500;
           letter-spacing: 0.1em;
           text-transform: uppercase;
+          text-align: center;
         }
 
         .cta-button {
@@ -176,13 +186,38 @@ const HalideLanding: React.FC = () => {
           51% { transform: scaleY(1); transform-origin: bottom; }
         }
         
+        .top-bar {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          width: 100%;
+        }
+
+        .bottom-bar {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          width: 100%;
+        }
+
         @media (max-width: 768px) {
-          .canvas-3d {
-             width: 90vw;
-             height: 60vw;
-          }
           .interface-grid {
-             padding: 2rem;
+             padding: 2rem 1.5rem;
+          }
+          .top-bar {
+             flex-direction: column;
+             gap: 1rem;
+          }
+          .top-bar-right {
+             display: none; /* Hide complex coordinates on mobile */
+          }
+          .bottom-bar {
+             flex-direction: column;
+             align-items: center;
+             gap: 1.5rem;
+          }
+          .bottom-bar-left {
+             text-align: center;
           }
         }
       `}</style>
@@ -199,23 +234,25 @@ const HalideLanding: React.FC = () => {
         <div className="halide-grain" style={{ filter: 'url(#grain)' }}></div>
 
         <div className="interface-grid">
-          <div style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            <img src="/logo.png" alt="Sakine Reinigung Logo" style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover' }} />
-            SAKINE REINIGUNG
-          </div>
-          <div style={{ textAlign: 'right', fontFamily: 'monospace', color: 'var(--accent)', fontSize: '0.7rem' }}>
-            <div>DEUTSCHLAND</div>
-            <div>GEWINNEN KANN JEDER</div>
-            <div>LERNE WEITER 💯</div>
+          <div className="top-bar">
+            <div style={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <img src="/logo.png" alt="Sakine Reinigung Logo" style={{ width: '48px', height: '48px', borderRadius: '50%', objectFit: 'cover' }} />
+              <span className="text-sm md:text-base">SAKINE REINIGUNG</span>
+            </div>
+            <div className="top-bar-right" style={{ textAlign: 'right', fontFamily: 'monospace', color: 'var(--accent)', fontSize: '0.7rem' }}>
+              <div>DEUTSCHLAND</div>
+              <div>GEWINNEN KANN JEDER</div>
+              <div>LERNE WEITER 💯</div>
+            </div>
           </div>
 
-          <div style={{ gridColumn: '1 / -1', alignSelf: 'center' }}>
+          <div style={{ pointerEvents: 'none' }}>
             <h1 className="hero-title">PERFEKTE<br />SAUBERKEIT</h1>
             <div className="hero-subtitle">Professionelle Reinigungsdienste</div>
           </div>
 
-          <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-            <div style={{ fontFamily: 'monospace', fontSize: '0.75rem', textTransform: 'uppercase' }}>
+          <div className="bottom-bar">
+            <div className="bottom-bar-left" style={{ fontFamily: 'monospace', fontSize: '0.75rem', textTransform: 'uppercase' }}>
               <p>[ VERFÜGBAR ]</p>
               <p>ZUVERLÄSSIG & GRÜNDLICH</p>
             </div>

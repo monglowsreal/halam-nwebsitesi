@@ -136,11 +136,11 @@ const HalideLanding: React.FC = () => {
         }
 
         .hero-title {
-          font-family: var(--font-montserrat), sans-serif;
+          font-family: var(--font-playfair), serif;
           font-size: clamp(2.5rem, 8vw, 8rem);
           line-height: 0.85;
-          letter-spacing: -0.04em;
-          font-weight: 800;
+          letter-spacing: -0.02em;
+          font-weight: 700;
           mix-blend-mode: difference;
           color: white;
           text-shadow: 0 4px 20px rgba(0,0,0,0.5);

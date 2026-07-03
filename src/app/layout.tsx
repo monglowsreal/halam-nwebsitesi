@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
-import { Outfit, Montserrat } from "next/font/google";
+import { Cormorant, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
-const outfit = Outfit({
-  variable: "--font-outfit",
+const cormorant = Cormorant({
+  variable: "--font-cormorant",
   subsets: ["latin"],
 });
 
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
 });
 
@@ -25,9 +25,9 @@ export default function RootLayout({
   return (
     <html
       lang="de"
-      className={`${outfit.variable} ${montserrat.variable} h-full antialiased`}
+      className={`${cormorant.variable} ${playfair.variable} h-full antialiased`}
     >
-      <body style={{ fontFamily: 'var(--font-outfit), sans-serif' }} className="min-h-full flex flex-col">{children}</body>
+      <body style={{ fontFamily: 'var(--font-cormorant), serif' }} className="min-h-full flex flex-col">{children}</body>
     </html>
   );
 }

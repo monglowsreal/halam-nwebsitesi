@@ -60,7 +60,6 @@ const HalideLanding: React.FC = () => {
         .halide-body {
           background-color: var(--bg);
           color: var(--silver);
-          font-family: 'Syncopate', sans-serif;
           overflow: hidden;
           position: relative;
           height: 100vh;
@@ -137,9 +136,11 @@ const HalideLanding: React.FC = () => {
         }
 
         .hero-title {
+          font-family: var(--font-montserrat), sans-serif;
           font-size: clamp(2.5rem, 8vw, 8rem);
           line-height: 0.85;
           letter-spacing: -0.04em;
+          font-weight: 800;
           mix-blend-mode: difference;
           color: white;
           text-shadow: 0 4px 20px rgba(0,0,0,0.5);
